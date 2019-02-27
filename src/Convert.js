@@ -1,46 +1,46 @@
+import ConverterTool from "./components/ConverterTool";
+
 class Convert{
     static convertByType(inValue, inType, outType){
       switch(inType){
         case 'dec':
           switch(outType){
-            case 'hex':
-            return Convert.decToHex(inValue);
-            case 'bin':
-            return Convert.decToBin(inValue);
-            case 'ascii':
-            return Convert.decToAscii(inValue); //needs implement
+            case 'hex': return Convert.decToHex(inValue);
+            case 'bin': return Convert.decToBin(inValue);
+            case 'ascii': return Convert.decToAscii(inValue); //needs implement
+            default: return inValue;
           }
         case 'hex':
           switch(outType){
-            case 'dec':
-            return Convert.hexToDec(inValue);
-            case 'bin':
-            return Convert.hexToBin(inValue);
-            case 'ascii':
-            return Convert.hexToAscii(inValue);
+            case 'dec': return Convert.hexToDec(inValue);
+            case 'bin': return Convert.hexToBin(inValue);
+            case 'ascii': return Convert.hexToAscii(inValue);
+            default: return inValue;
           }
 
         case 'bin':
           switch(outType){
-            case 'dec':
-            return Convert.binToDec(inValue);
-            case 'hex':
-            return Convert.binToHex(inValue);
-            case 'ascii': 
-            return Convert.binToAscii(inValue); // needs implement
+            case 'dec':return Convert.binToDec(inValue);
+            case 'hex':return Convert.binToHex(inValue);
+            case 'ascii': return Convert.binToAscii(inValue); 
+            default: return inValue;
           }
 
         case 'ascii':
           switch(outType){
-            case 'dec':
-            return Convert.asciiToDec(inValue); // needs implement
-            case 'hex':
-            return Convert.asciiToHex(inValue);
-            case 'bin':
-            return Convert.asciiToBin(inValue);
+            case 'dec':return Convert.asciiToDec(inValue); // needs implement
+            case 'hex':return Convert.asciiToHex(inValue);
+            case 'bin':return Convert.asciiToBin(inValue);
+            default: return inValue;
           }
+        default: return inValue;
       }
     }
+
+    static binToAscii(bin){
+      return Convert.hexToAscii(Convert.binToHex(bin));
+    }
+
     static decToHex(dec){
         const r = dec % 16;
         const d = Math.floor(dec / 16);
@@ -93,20 +93,32 @@ class Convert{
     }
     
     static xor(b0, b1){
+      var c0 = b0.length > b1.length ? b0 : b1, c1 = b0.length < b1.length ? b0 : b1;
+      if(c0.length === c1.length){
+        c0 = b0;
+      }
       let result = '';
-      for(let i = 0; i < b0.length; i++){
-        let sum = parseInt(b0[i],2) + parseInt(b1[i],2);
+      for(let i = 0, j = 0; i < c0.length; i++){
+        if(j === c1.length)
+          j = 0;
+        let sum = parseInt(c0[i],2) + parseInt(c1[j],2);
         result += (sum === 2 ? 0 : sum);
+        j++;
       }
       return result;
     }
 
     static batchXor(arr){
-      let result = '';
-      for(let i = 1; i < arr.length; i++){
-        result = Convert.xor(arr[i], arr[i-1]);
+      switch(arr.length){
+        case 0: 
+        case 1: return '0';
+        default:
+          let result = Convert.xor(arr[1], arr[0]);
+          for(let i = 2; i < arr.length; i++){
+            result = Convert.xor(arr[i], result);
+          }
+          return result;
       }
-      return result;
     }
     
     static binToDec(bin){

@@ -1,10 +1,8 @@
-import Convert from '../Convert';
-
 import '../SourceCodePro.css';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../styles.css';
 import  { PropTypes } from 'react';
-import Output from './output';
+
 
 import React, { Component } from 'react';
 

@@ -20,7 +20,8 @@ class ConverterTool extends Component{
         selectedOption1: null,
         selectedOption2: null,
         fromType: '',
-        toType: ''
+        toType: '',
+        disableInput:true
       };
       this.buttonClickOK = this.buttonClickOK.bind(this);
       this.inputKeyDown = this.inputKeyDown.bind(this);
@@ -34,9 +35,9 @@ class ConverterTool extends Component{
   
     inputKeyDown(e){
       
-      //if(!e.key){
-        console.log('inType: ' + typeof this.state.fromType);
-        console.log('outtype: ' + typeof this.state.toType);
+      if(!e.key){
+        console.log('inType: ' +  this.state.fromType);
+        console.log('outtype: ' +  this.state.toType);
   
         let result = Convert.convertByType(e.target.value, this.state.fromType, this.state.toType);
         console.log('result: ' + result);
@@ -45,22 +46,38 @@ class ConverterTool extends Component{
           input: e.target.value,
           output: result
         });
-      //}
+      }
+    }
+
+    shouldDisableConversion = (opt1, opt2) => {
+      if(opt1 === null || opt2 === null)
+        return true;
+
+      //console.log('selectedoption1: ' + prev.selectedOption1.value);
+      //console.log('selectedoption2: ' + prev.selectedOption2.value);
+
+      const disableConversion = opt1.value === 'dec' && opt2.value === 'ascii';
+      return disableConversion || (opt1.value === 'ascii' && opt2.value === 'dec');
     }
   
     dropDown1Changed = (value) => {
-      this.setState({
-         selectedOption1:value,
-         fromType: value.value
-        });
-      console.log(`Option selected:`, value);
+      console.log('selectedoption1: ' + value.value);
+      this.setState((prevState,props)=>(
+        {
+          selectedOption1:value,
+          fromType: value.value,
+          disableInput: this.shouldDisableConversion(value, prevState.selectedOption2)
+         }
+      ));
     }
     dropDown2Changed = (value) => {
-      this.setState({
-        selectedOption2:value,
-        toType: value.value
-       });
-      console.log(`Option selected:`, value);
+      this.setState((prevState,props)=>(
+        {
+          selectedOption2:value,
+          toType: value.value,
+          disableInput: this.shouldDisableConversion(prevState.selectedOption1, value)
+         }
+      ));
     }
   
     render(){
@@ -83,7 +100,7 @@ class ConverterTool extends Component{
                     />
                     </div>    
                     <div className="col-sm-8 col-md-8 col-xs-8">
-                        <input type="text" id="input" value={this.state.input} className="form-control" onChange={this.inputKeyDown} onKeyDown={this.inputKeyDown} value={this.state.input}/>
+                        <input type="text" id="input" disabled={this.state.disableInput} value={this.state.input} className="form-control" onChange={this.inputKeyDown} onKeyDown={this.inputKeyDown} value={this.state.input}/>
                     </div>
                   </div>
                   <p style={{marginBottom:'.75em',fontSize: '.75em'}}>to</p>

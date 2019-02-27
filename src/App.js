@@ -1,7 +1,7 @@
 import React from 'react';
 import { Component } from 'react';
 import  { PropTypes } from 'react';
-import logo from './logo.svg';
+
 import './App.css';
 import ConverterTool from './components/ConverterTool';
 import Output from './components/output';
@@ -13,26 +13,17 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 import Select from 'react-select';
 import './styles.css';
+import Convert from './Convert';
 //import './fontawesome-free-5.7.2-web/css/all.min.css';
 
 Output.defaultProps = {styleProp: {}};
  
 class App extends Component {
+ 
   constructor(props){
     super(props);
-    this.state = {
-      items:[
-        {
-          id: 3,
-          output: 'test3'
-        },
-        {
-          id: 2,
-          output: 'test4'
-        }
-      ]
-    };
-  } 
+    console.log('bintoasciitest: ' + Convert.binToAscii('011110010110111101110101'));
+  }
 
   render() {
  
