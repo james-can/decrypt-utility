@@ -100,6 +100,14 @@ class Convert{
       }
       return result;
     }
+
+    static batchXor(arr){
+      let result = '';
+      for(let i = 1; i < arr.length; i++){
+        result = Convert.xor(arr[i], arr[i-1]);
+      }
+      return result;
+    }
     
     static binToDec(bin){
       let rev = bin.split('').reverse().join('');
