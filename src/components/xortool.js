@@ -22,18 +22,25 @@ class XorTool extends Component{
 
       this.state = {
         input: '',
-        output: '0',
+        outputStyled: '0',
+        outputNonStyled: '',
         selectedOption : null,
         items:[],
         disableInput: true
       }
 
-      console.log('batchxor test result: ' + Convert.batchXor([ '0110', '1111' , '1000', '0001' ]));
+      //console.log('batchxor test result, should be 0000: ' + Convert.batchXor([ '0110', '1111' , '1000', '0001' ]));
+      console.log('xor test result 1000, 1110, should be 0110: ' + Convert.xor('1000', '1110'));
     }
   
     dropDownChanged(event){
       this.setState({input: ''});
-      this.setState({selectedOption: event, disableInput: false});
+      this.setState((prevState, props) =>(
+        {
+          selectedOption: event, 
+          disableInput: false, 
+          output: prevState.selectedOption === null ? '0' : Convert.convertByType(prevState.output,  prevState.selectedOption.value, event.value)
+        }));
       console.log(event);
     }
 
@@ -44,6 +51,7 @@ class XorTool extends Component{
         for (let i in filtered)
           binaryArray.push(filtered[i].binaryValue);
         return{
+          
           output: Convert.convertByType(Convert.batchXor(binaryArray), 'bin', prevState.selectedOption.value),
           items: filtered
         }
@@ -60,7 +68,7 @@ class XorTool extends Component{
       console.log('should be 0110: ' + xor);
 
       this.setState((prevState, props) =>{
-        let newItem = {
+        const newItem = {
           id: prevState.items.length,
           output: prevState.input,
           binaryValue: Convert.convertByType(prevState.input, prevState.selectedOption.value, 'bin' )
@@ -71,10 +79,13 @@ class XorTool extends Component{
         for (let i in prevState.items)
           binaryArray.push(prevState.items[i].binaryValue);
 
+        const output = Convert.convertByType(Convert.batchXor(binaryArray), 'bin', prevState.selectedOption.value);
+
         return{
           input: '',
           items: [...prevState.items, newItem],
-          output: Convert.convertByType(Convert.batchXor(binaryArray), 'bin', prevState.selectedOption.value)
+          output: output,
+          outputStyled: output
         }
       })
     }
@@ -97,11 +108,29 @@ class XorTool extends Component{
         break;
 
       }
-      if(validInput ||  e.target.value.length === 0)
-        this.setState({
+
+      const inputText = e.target.value;
+
+      if(validInput ||  inputText.length === 0)
+        this.setState((prevState,props)=>{
           
-          input: e.target.value
-          
+          console.log(prevState);
+          const newBinary = Convert.convertByType(inputText,  prevState.selectedOption.value, 'bin' );
+          let binaryArray = [];
+
+          for (let i in prevState.items) 
+            binaryArray.push(prevState.items[i].binaryValue);
+
+          const text = `${Convert.convertByType(Convert.batchXor(inputText.length === 0 ? binaryArray : [...binaryArray, newBinary]), 'bin', prevState.selectedOption.value)}`;
+           
+          console.log('text: ' + typeof text);
+
+          return {
+            output:text,
+            input: inputText,
+            outputStyled: text.substr(text.length - inputText.length ),
+            outputNonStyled: text.substr(0, text.length - inputText.length )
+          }
         });
     }
   
@@ -115,15 +144,19 @@ class XorTool extends Component{
       return(
         <div>
           
-          <div className="well subWell" style={{borderRadius: '20px 20px 0px 0px', marginBottom: '0px'}}>
+          <div className="well subWell" style={{borderRadius: '20px 20px 0px 0px'}}>
             <p style={{marginBottom:'.75em',fontSize: '.75em'}}>xor</p>
             <div className="row">
               <div className="col-sm-12 col-xs-12 col-md-12 col-lg-12" style={{marginBottom:'5px'}}>
-                <Output outputValue={this.state.output}/>
+              <div id="output">
+                {/* this.state.output */}
+                {this.state.outputNonStyled}
+                <span style={{backgroundColor:'blue',color:'white'}}>{this.state.outputStyled}</span>
+              </div>
               </div>
             </div>
             <p style={{marginBottom:'.75em',fontSize: '.75em'}}>input</p>
-            <input type="text" id="input" disabled={this.state.disableInput} value={this.state.input} className="form-control" onChange={this.inputKeyDown} onKeyDown={this.inputKeyDown} value={this.state.input}/>
+            <input type="text" id="input" disabled={this.state.disableInput} value={this.state.input} className="form-control" onChange={this.inputKeyDown}  value={this.state.input}/>
             <div className="row">
               <div className="col-sm-10 col-xs-10 col-md-10 col-lg-10">
                 <Select style={{display:'inline'}}

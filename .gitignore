@@ -24,3 +24,5 @@ yarn-error.log*
 
 
 serviceWorker.js
+
+src/SimpleConverter.js

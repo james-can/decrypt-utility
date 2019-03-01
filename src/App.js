@@ -6,7 +6,7 @@ import './App.css';
 import ConverterTool from './components/ConverterTool';
 import Output from './components/output';
 import XorTool from './components/xortool';
-
+import DecryptTool from './components/DecryptTool';
 
 import './SourceCodePro.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
@@ -14,6 +14,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import Select from 'react-select';
 import './styles.css';
 import Convert from './Convert';
+
 //import './fontawesome-free-5.7.2-web/css/all.min.css';
 
 Output.defaultProps = {styleProp: {}};
@@ -37,12 +38,12 @@ class App extends Component {
               
                 <div style={{width:'48%', float:'left'}}>
                   <div className="well">
-
+                  <DecryptTool/>
                   </div>
                 </div>
                 <div style={{width:'48%', float:'right'}}>
 
-                  <div className="well" style={{height:'500px'}}>
+                  <div className="well" >
                   <XorTool/> 
                   </div>
                 </div>

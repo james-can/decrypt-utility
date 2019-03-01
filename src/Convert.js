@@ -37,6 +37,14 @@ class Convert{
       }
     }
 
+    static asciiToDec(ascii){
+      return Convert.binToDec(Convert.asciiToBin(ascii));
+    }
+
+    static decToAscii(dec){
+      return Convert.binToAscii(Convert.decToBin(dec));
+    }
+
     static binToAscii(bin){
       return Convert.hexToAscii(Convert.binToHex(bin));
     }
@@ -98,13 +106,18 @@ class Convert{
         c0 = b0;
       }
       let result = '';
-      for(let i = 0, j = 0; i < c0.length; i++){
-        if(j === c1.length)
-          j = 0;
-        let sum = parseInt(c0[i],2) + parseInt(c1[j],2);
-        result += (sum === 2 ? 0 : sum);
-        j++;
+
+      for(let i = c0.length -1, j = c1.length -1; i >=  0; i--){
+     
+        let firstTerm = parseInt(c0[i],2);
+        let secondTerm = (j < 0 ?  0 : parseInt(c1[j],2));
+        
+        let sum = firstTerm + secondTerm;
+        result = `${(sum === 2 ? 0 : sum)}${result}`;
+
+           j--;
       }
+
       return result;
     }
 
