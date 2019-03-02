@@ -1,6 +1,6 @@
 import React from 'react';
 import { Component } from 'react';
-import  { PropTypes } from 'react';
+
 
 import './App.css';
 import ConverterTool from './components/ConverterTool';
@@ -11,9 +11,9 @@ import DecryptTool from './components/DecryptTool';
 import './SourceCodePro.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
-import Select from 'react-select';
+
 import './styles.css';
-import Convert from './Convert';
+
 
 //import './fontawesome-free-5.7.2-web/css/all.min.css';
 
@@ -23,7 +23,6 @@ class App extends Component {
  
   constructor(props){
     super(props);
-    console.log('bintoasciitest: ' + Convert.binToAscii('011110010110111101110101'));
   }
 
   render() {

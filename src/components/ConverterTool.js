@@ -30,17 +30,12 @@ class ConverterTool extends Component{
       
     buttonClickOK(){
       this.setState({output: Convert.hexToAscii(this.state.input)});
-      console.log(this.state.input);
     }
   
     inputKeyDown(e){
       
       if(!e.key){
-        console.log('inType: ' +  this.state.fromType);
-        console.log('outtype: ' +  this.state.toType);
-  
         let result = Convert.convertByType(e.target.value, this.state.fromType, this.state.toType);
-        console.log('result: ' + result);
         
         this.setState({
           input: e.target.value,
@@ -53,15 +48,12 @@ class ConverterTool extends Component{
       if(opt1 === null || opt2 === null)
         return true;
 
-      //console.log('selectedoption1: ' + prev.selectedOption1.value);
-      //console.log('selectedoption2: ' + prev.selectedOption2.value);
 
       const disableConversion = opt1.value === 'dec' && opt2.value === 'ascii';
       return disableConversion || (opt1.value === 'ascii' && opt2.value === 'dec');
     }
   
     dropDown1Changed = (value) => {
-      console.log('selectedoption1: ' + value.value);
       this.setState((prevState,props)=>(
         {
           selectedOption1:value,
